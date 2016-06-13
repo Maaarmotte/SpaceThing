@@ -181,6 +181,13 @@ if SERVER then
 
 	end
 
+	ENT.lsEntity = true
+
+	function isLSEntity( e )
+
+		return e.lsEntity or false
+
+	end
 
 else
 	function ENT:beingLookedAtByLocalPlayer()
