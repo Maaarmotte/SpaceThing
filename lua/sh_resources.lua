@@ -5,48 +5,46 @@ if SERVER then
 	SThing.playerTemperatureConsumption = 0.01
 
 	function SThing.UpdatePlayersResources()
-		if CurTime() - SThing.lastPlayersResourcesUpdate > SThing.playersResourcesUpdateDelay then
-			for _,ply in ipairs(player.GetAll()) do
-				local aPly = GetAdvPlayer(ply)
+		for _,ply in ipairs(player.GetAll()) do
+			local aPly = GetAdvPlayer(ply)
 
-				if not aPly:Get("lifesupport") then continue end
+			if not aPly:Get("lifesupport") then continue end
 
-				-- Consume oxygen
-				local initialOxygen = aPly:Get("oxygen")
-				aPly:Set("oxygen", math.max(initialOxygen - SThing.playerOxygenConsumption, 0))
+			-- Consume oxygen
+			local initialOxygen = aPly:Get("oxygen")
+			aPly:Set("oxygen", math.max(initialOxygen - SThing.playerOxygenConsumption, 0))
 
-				-- Get the player's atmosphere and try to refill
-				local atmo = SThing.GetPlayerAtmosphere(ply)
+			-- Get the player's atmosphere and try to refill
+			local atmo = SThing.GetEntityAtmosphere(ply)
 
-				-- Was able to locate an atmosphere for the player
-				if atmo then
-					aPly:Set("atmosphere", atmo)
-					if atmo:Get("oxygen") >= SThing.playerOxygenConsumption then
-						needed = 100 - aPly:Get("oxygen")
-						takeable = math.min(atmo:Get("oxygen"), needed)
+			-- Was able to locate an atmosphere for the player
+			if atmo then
+				aPly:Set("atmosphere", atmo)
+				if atmo:Get("oxygen") >= SThing.playerOxygenConsumption then
+					needed = 100 - aPly:Get("oxygen")
+					takeable = math.min(atmo:Get("oxygen"), needed)
 
-						-- Can only take oxygen if not in water !
-						if ply:WaterLevel() < 3 then
-							atmo:Dec("oxygen", takeable)
-							aPly:Inc("oxygen", takeable)
-						end
+					-- Can only take oxygen if not in water !
+					if ply:WaterLevel() < 3 then
+						atmo:Dec("oxygen", takeable)
+						aPly:Inc("oxygen", takeable)
 					end
-				else
-					aPly:Set("atmosphere", nil)
 				end
-
-				-- If couldn't refill, damage !
-				if aPly:Get("oxygen") <= 0 then
-					ply:TakeDamage(10)
-				end
-
-				-- Send new level to the player, if necessary
-				if aPly:Get("oxygen") != initialOxygen then
-					aPly:Sync("oxygen")
-				end
+			else
+				aPly:Set("atmosphere", nil)
 			end
-			SThing.lastPlayersResourcesUpdate = CurTime()
+
+			-- If couldn't refill, damage !
+			if aPly:Get("oxygen") <= 0 then
+				ply:TakeDamage(10)
+			end
+
+			-- Send new level to the player, if necessary
+			if aPly:Get("oxygen") != initialOxygen then
+				aPly:Sync("oxygen")
+			end
 		end
+		SThing.lastPlayersResourcesUpdate = CurTime()
 	end
 
 	hook.Add("AP_PlayerReady", "STResources", function(aPly)
