@@ -3,6 +3,7 @@ TOOL.Name = "LifeSupport Link tool"
 TOOL.Command = nil
 TOOL.ConfigName = ""
 
+AddCSLuaFile()
 
 if ( CLIENT ) then
 

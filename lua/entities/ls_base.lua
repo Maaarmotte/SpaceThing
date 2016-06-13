@@ -9,6 +9,13 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
 
+ENT.lsEntity = true
+
+function isLSEntity( e )
+
+	return e.lsEntity or false
+
+end
 
 if SERVER then
 
@@ -102,6 +109,10 @@ if SERVER then
 							resources[v[1]] = (resources[v[1]] or 0) + v[2]
 
 						end
+					else
+
+						Entity(entID):dontProduce() 
+
 					end
 
 
@@ -181,13 +192,7 @@ if SERVER then
 
 	end
 
-	ENT.lsEntity = true
 
-	function isLSEntity( e )
-
-		return e.lsEntity or false
-
-	end
 
 else
 	function ENT:beingLookedAtByLocalPlayer()

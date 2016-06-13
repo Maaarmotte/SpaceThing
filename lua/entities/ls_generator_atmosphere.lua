@@ -3,7 +3,7 @@ local ENT = {}
 ENT.Type = "anim"
 ENT.Base = "ls_generator"
  
-ENT.PrintName		= "LifeSupport solar panel"
+ENT.PrintName		= "LifeSupport atmosphere creator"
 ENT.Author			= ""
 ENT.Contact			= ""
 ENT.Purpose			= ""
@@ -13,7 +13,7 @@ if SERVER then
 		 
 	function ENT:Initialize()
 	 
-		self:SetModel( "models/props_interiors/Radiator01a.mdl" )
+		self:SetModel( "models/props_wasteland/laundry_washer003.mdl" )
 		self:PhysicsInit( SOLID_VPHYSICS )   
 		self:SetMoveType( MOVETYPE_VPHYSICS ) 
 		self:SetSolid( SOLID_VPHYSICS ) 
@@ -23,22 +23,26 @@ if SERVER then
 			phys:Wake()
 		end
 
+		self.atmo = SThing.AddNewAtmosphere( self:GetPos(), 1000 )
+		self.atmo:Set("oxygen", 4000)
+
 	end
 
 	function ENT:getRequirements()
 
-		return {}
+		return { {"energy", 20} }
 
 	end
 	
 	function ENT:getProduction() 
 
-		return {{ "energy", 10 }}
+		return {}
 
 	end 
 
 	function ENT:Think()
 
+		self.atmo:SetPos( self:GetPos() )
 		self:SetNWInt("group", self:getGroup()) -- TODO: remove
 
 	end
@@ -49,7 +53,7 @@ else
 
 	function ENT:Think()
 		if self:BeingLookedAtByLocalPlayer() then
-			local str = "== SOLAR PANEL ==\n"
+			local str = "== Atmophere creator ==\n"
 			str = str .. "Group: " .. self:GetNWInt("group")
 
 			AddWorldTip( self:EntIndex(), str, nil, nil, self)
@@ -60,4 +64,4 @@ else
 end
 
 
-scripted_ents.Register(ENT, "ls_generator_solar")
+scripted_ents.Register(ENT, "ls_generator_atmosphere")

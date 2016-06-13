@@ -21,7 +21,14 @@ if SERVER then
 
 		return {}
 
-	end 
+	end
+	
+	function ENT:dontProduce() 
+
+		return {}
+
+	end
+
 
 	function ENT:isGenerator()
 

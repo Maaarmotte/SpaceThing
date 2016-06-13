@@ -16,11 +16,7 @@ if SERVER then
 				aPly:Set("oxygen", math.max(initialOxygen - SThing.playerOxygenConsumption, 0))
 
 				-- Get the player's atmosphere and try to refill
-				local atmo = aPly:Get("atmosphere")
-
-				if not atmo or not atmo:IsInside(ply:GetPos()) then
-					atmo = SThing.GetPlayerAtmosphere(ply)
-				end
+				local atmo = SThing.GetPlayerAtmosphere(ply)
 
 				-- Was able to locate an atmosphere for the player
 				if atmo then

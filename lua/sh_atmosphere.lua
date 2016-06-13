@@ -31,8 +31,28 @@ function STAtmosphere:Inc(name, value)
 	self:Set(name, self:Get(name) + value)
 end
 
+function STAtmosphere:SetPos(pos)
+	self:Set("position", pos)
+end
+
+function STAtmosphere:GetPos()
+	return self:Get("position")
+end
+
+function STAtmosphere:SetRadius(radius)
+	self:Set("radius", radius)
+end
+
+function STAtmosphere:GetRadius()
+	return self:Get("radius")
+end
+
 function STAtmosphere:IsInside(position)
 	return (position - self:Get("position")):Length() <= self:Get("radius")
+end
+
+function STAtmosphere:Remove()
+	table.RemoveByValue(SThing.atmospheres, self)
 end
 
 function SThing.AddNewAtmosphere(position, radius)
@@ -43,6 +63,11 @@ end
 
 -- Return the player's closest atmosphere
 function SThing.GetPlayerAtmosphere(ply)
+	local atmo = GetAdvPlayer(ply):Get("atmosphere")
+	if atmo and atmo:IsInside(ply:GetPos()) then
+		return atmo
+	end
+
 	local closest = nil
 	local shortestDist = 100000
 	for _,atmo in ipairs(SThing.atmospheres) do

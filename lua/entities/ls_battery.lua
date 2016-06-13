@@ -57,7 +57,7 @@ else
 
 	function ENT:Think()
 		if self:BeingLookedAtByLocalPlayer() then
-			local str = "== SOLAR PANEL ==\n"
+			local str = "== BATTERY ==\n"
 			str = str .. "Group: " .. self:GetNWInt("group") .. "\n"
 			str = str .. "Energy: " .. self:GetNWInt("energy")
 			
