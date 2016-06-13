@@ -107,7 +107,7 @@ elseif CLIENT then
 	end)
 	
 	
-	hook.Add("PostInitEntity", "AP_Loaded", function()
+	hook.Add("InitPostEntity", "AP_Loaded", function()
 		net.Start("AP_PlayerReady")
 		net.SendToServer()
 		

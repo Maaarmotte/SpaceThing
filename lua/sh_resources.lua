@@ -9,6 +9,8 @@ if SERVER then
 			for _,ply in ipairs(player.GetAll()) do
 				local aPly = GetAdvPlayer(ply)
 
+				if not aPly:Get("lifesupport") then continue end
+
 				-- Consume oxygen
 				local initialOxygen = aPly:Get("oxygen")
 				aPly:Set("oxygen", math.max(initialOxygen - SThing.playerOxygenConsumption, 0))
@@ -51,13 +53,11 @@ if SERVER then
 		end
 	end
 
-	hook.Add("AP_PlayerReady", "STOxygen", function(aPly)
+	hook.Add("AP_PlayerReady", "STResources", function(aPly)
 		aPly:Set("oxygen", 100, true)
+		aPly:Set("temperature", 273, true)
+		aPly:Set("lifesupport", true)
 	end)	
-	
-	hook.Add("AP_PlayerReady", "STTemperature", function(aPly)
-		aPly:Set("temperature", 273.15, true)
-	end)		
 elseif CLIENT then
 	hook.Add("AP_PropertyChanged", "STOxygenUpdate", function(aPly, name, value, tpe)
 		print("Oxygen: " .. value .."%")
@@ -69,9 +69,9 @@ elseif CLIENT then
 	local sizex = 400
 	local sizey = 20
 	local gapy = 35
-	local aPly = GetAdvPlayer(LocalPlayer())
 	
 	hook.Add("HUDPaint", "STOxygen", function()
+		local aPly = GetAdvPlayer(LocalPlayer())
 		local oxygen = aPly:Get("oxygen") or 0
 		local temperature = aPly:Get("temperature") or 0
 		
@@ -85,7 +85,7 @@ elseif CLIENT then
 			surface.DrawRect(ScrW()/2 - len/2, ScrH() - sizey - gapy, len, sizey)
 		end
 		
-		local text = temperature .. " *K"
+		local text = temperature .. " K"
 		surface.SetFont( "Trebuchet24" )
 		surface.SetTextColor( 255, 255, 255, 255 )
 		surface.SetTextPos( ScrW()/2  - surface.GetTextSize(text)/2, ScrH() - sizey - gapy - 2 )
