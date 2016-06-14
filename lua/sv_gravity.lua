@@ -31,7 +31,7 @@ function SThing.CalcPartialEntsGravity(ticks)
 						ignored[ent] = true	-- Ignore if it has no physics object...
 					end
 				else -- if ent:IsPlayer()
-					if atmo then
+					if atmo and atmo:Get("gravity") then
 						ent:SetGravity(atmo:Get("gravity") + 0.000000000001)
 					else
 						ent:SetGravity(0.000000000001)
