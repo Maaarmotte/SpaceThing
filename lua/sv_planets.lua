@@ -12,7 +12,7 @@ end]]--
 
 -- Retrive atmospheres from maps
 
-hook.Add("InitPosEntity", "STFindPlanets", function()
+hook.Add("InitPostEntity", "STFindPlanets", function()
 	for k,v in ipairs(ents.GetAll()) do
 		if v:GetClass() == "logic_case" then
 			local kv = v:GetKeyValues()
