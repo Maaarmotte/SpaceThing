@@ -68,7 +68,9 @@ if SERVER then
 
 	function ENT:Think()
 
-		self.atmo:SetPos( self:GetPos() )
+		if self.active then
+			self.atmo:SetPos( self:GetPos() )
+		end
 		self:SetNWInt("group", self:getGroup()) -- TODO: remove
 
 	end
