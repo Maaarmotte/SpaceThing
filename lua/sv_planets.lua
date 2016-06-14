@@ -20,7 +20,7 @@ hook.Add("InitPostEntity", "STFindPlanets", function()
 				local radius = tonumber(kv.Case02) or 0
 				local atmo = SThing.AddNewAtmosphere(v:GetPos(), radius)
 				atmo:Set("gravity", tonumber(kv.Case03) or 0)
-				atmo:Set("oxygen", (tonumber(kv.Case09)/100)*(4/3)*math.pi*radius*radius*radius)
+				atmo:Set("oxygen", (tonumber(kv.Case09)/100)*atmo:GetVolume())
 			end
 		end
 	end
