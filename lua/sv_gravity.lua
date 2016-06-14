@@ -1,19 +1,3 @@
-local ticks = 66.566669
-
--- Generate gravity for the players
-function SThing.CalcPlayersGravity()
-	local g = physenv.GetGravity()/ticks
-	for _,ply in ipairs(player.GetAll()) do
-		local atmo = SThing.GetEntityAtmosphere(ply)
-		if atmo then
-			local mult = atmo:Get("gravity")
-			if mult then
-				ply:SetVelocity(g*mult)
-			end
-		end
-	end
-end
-
 -- Manage gravity for the other entities
 local iter = 0
 local index = 1
@@ -33,16 +17,25 @@ function SThing.CalcPartialEntsGravity(ticks)
 			local ent = entities[index]
 			if IsValid(ent) and not ignored[ent] then
 				local atmo = SThing.GetEntityAtmosphere(ent)
-				local phys = ent:GetPhysicsObject()
 
-				if IsValid(phys) then
-					if atmo and atmo:Get("gravity") > 0 then
-						phys:EnableGravity(true)
+				if not ent:IsPlayer() then
+					local phys = ent:GetPhysicsObject()
+
+					if IsValid(phys) then
+						if atmo and atmo:Get("gravity") and atmo:Get("gravity") > 0 then
+							phys:EnableGravity(true)
+						else
+							phys:EnableGravity(false)
+						end
 					else
-						phys:EnableGravity(false)
+						ignored[ent] = true	-- Ignore if it has no physics object...
 					end
-				else
-					ignored[ent] = true	-- Ignore if it has no physics object...
+				else -- if ent:IsPlayer()
+					if atmo then
+						ent:SetGravity(atmo:Get("gravity") + 0.000000000001)
+					else
+						ent:SetGravity(0.000000000001)
+					end
 				end
 			end
 			index = index + 1

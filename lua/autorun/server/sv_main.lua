@@ -22,7 +22,6 @@ local function main()
 	else
 		SThing.CalcPartialEntsGravity(65)
 	end
-	SThing.CalcPlayersGravity()
 end
 
 hook.Add("Tick", "STTick", main)
