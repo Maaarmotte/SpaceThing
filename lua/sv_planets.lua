@@ -24,4 +24,4 @@ hook.Add("InitPosEntity", "STFindPlanets", function()
 			end
 		end
 	end
-end
+end)
