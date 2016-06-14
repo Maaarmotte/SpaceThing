@@ -1,5 +1,5 @@
-TOOL.Category = "Construction"
-TOOL.Name = "LifeSupport Link tool"
+TOOL.Category = "SpaceThing"
+TOOL.Name = "Link tool"
 TOOL.Command = nil
 TOOL.ConfigName = ""
 

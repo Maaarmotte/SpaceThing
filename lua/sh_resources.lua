@@ -75,13 +75,6 @@ if SERVER then
 		aPly:Set("temperature", 273, true)
 	end)
 elseif CLIENT then
-	hook.Add("AP_PropertyChanged", "STOxygenUpdate", function(aPly, name, value, tpe)
-		print("Oxygen: " .. value .."%")
-	end)
-	hook.Add("AP_PropertyChanged", "STTemperature", function(aPly, name, value, tpe)
-		print("Temperature: " .. value .. "K")
-	end)
-	
 	local sizex = 400
 	local sizey = 25
 	local gapy = 35
@@ -100,10 +93,10 @@ elseif CLIENT then
 			
 			surface.SetDrawColor(255, 255, 255, 200)
 
-			if temperature < SThing.playerTemperature - SThing.playerTemperatureTolerance/2 then
+			if temperature < SThing.playerTemperature - SThing.playerTemperatureTolerance then
 				surface.SetDrawColor(30, 168, 227, 200)
 				textColor = Color(255, 255, 255, 255)
-			elseif temperature > SThing.playerTemperature + SThing.playerTemperatureTolerance/2 then
+			elseif temperature > SThing.playerTemperature + SThing.playerTemperatureTolerance then
 				surface.SetDrawColor(224, 60, 60, 200)
 				textColor = Color(255, 255, 255, 255)
 			end
