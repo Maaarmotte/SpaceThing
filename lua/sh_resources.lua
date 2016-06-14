@@ -1,10 +1,11 @@
+SThing.playersResourcesUpdateDelay = 1
+SThing.playerOxygenConsumption = 5
+SThing.playerTemperatureConsumption = 5
+SThing.playerTemperature = 273
+SThing.playerTemperatureTolerance = 50
+
 if SERVER then
 	SThing.lastPlayersResourcesUpdate = CurTime()
-	SThing.playersResourcesUpdateDelay = 1
-	SThing.playerOxygenConsumption = 10
-	SThing.playerTemperatureMult = 10
-	SThing.playerTemperature = 273
-	SThing.playerTemperatureTolerance = 50
 
 	function SThing.UpdatePlayersResources()
 		for _,ply in ipairs(player.GetAll()) do
@@ -53,7 +54,7 @@ if SERVER then
 				temperature = atmo:Get("temperature") or 0
 			end
 
-			aPly:Set(aPly:Get("temperature") + (temperature - aPly:Get("temperature"))/SThing.playerTemperatureMult, true)
+			aPly:Inc("temperature", math.Clamp(temperature - aPly:Get("temperature"), -SThing.playerTemperatureConsumption, SThing.playerTemperatureConsumption), true)
 
 			if math.abs(aPly:Get("temperature") - SThing.playerTemperature) > SThing.playerTemperatureTolerance then
 				ply:TakeDamage(10)
@@ -66,7 +67,13 @@ if SERVER then
 		aPly:Set("oxygen", 100, true)
 		aPly:Set("temperature", 273, true)
 		aPly:Set("lifesupport", true)
-	end)	
+	end)
+
+	hook.Add("PlayerSpawn", "STResources", function(ply)
+		local aPly = GetAdvPlayer(ply)
+		aPly:Set("oxygen", 100, true)
+		aPly:Set("temperature", 273, true)
+	end)
 elseif CLIENT then
 	hook.Add("AP_PropertyChanged", "STOxygenUpdate", function(aPly, name, value, tpe)
 		print("Oxygen: " .. value .."%")
@@ -76,7 +83,7 @@ elseif CLIENT then
 	end)
 	
 	local sizex = 400
-	local sizey = 20
+	local sizey = 25
 	local gapy = 35
 	
 	hook.Add("HUDPaint", "STOxygen", function()
@@ -84,20 +91,30 @@ elseif CLIENT then
 		local oxygen = aPly:Get("oxygen") or 0
 		local temperature = aPly:Get("temperature") or 0
 		
-		if oxygen < 100 then
+		if oxygen < 100 or math.abs(temperature - SThing.playerTemperature) > SThing.playerTemperatureTolerance/2 then
 			local len = sizex*oxygen/100
+			local textColor = Color(0, 0, 0, 255)
 			
-			surface.SetDrawColor(0, 0, 0, 180)
+			surface.SetDrawColor(0, 0, 0, 200)
 			surface.DrawRect(ScrW()/2 - sizex/2 - 2, ScrH() - sizey - gapy - 2, sizex + 4, sizey + 4)
 			
-			surface.SetDrawColor(51, 153, 255, 180)
+			surface.SetDrawColor(255, 255, 255, 200)
+
+			if temperature < SThing.playerTemperature - SThing.playerTemperatureTolerance/2 then
+				surface.SetDrawColor(30, 168, 227, 200)
+				textColor = Color(255, 255, 255, 255)
+			elseif temperature > SThing.playerTemperature + SThing.playerTemperatureTolerance/2 then
+				surface.SetDrawColor(224, 60, 60, 200)
+				textColor = Color(255, 255, 255, 255)
+			end
+
 			surface.DrawRect(ScrW()/2 - len/2, ScrH() - sizey - gapy, len, sizey)
+
+			local text = "Oxygen / " .. math.Round(temperature) .. " K"
+			surface.SetFont("Trebuchet24")
+			surface.SetTextColor(textColor)
+			surface.SetTextPos(ScrW()/2  - surface.GetTextSize(text)/2, ScrH() - sizey - gapy - 1)
+			surface.DrawText(text)
 		end
-		
-		local text = temperature .. " K"
-		surface.SetFont( "Trebuchet24" )
-		surface.SetTextColor( 255, 255, 255, 255 )
-		surface.SetTextPos( ScrW()/2  - surface.GetTextSize(text)/2, ScrH() - sizey - gapy - 2 )
-		surface.DrawText(text)
 	end)
 end
