@@ -7,9 +7,11 @@ function STAtmosphere.New(position, radius)
 	
 	self.properties = {}
 	
-	self:Set("position", position)
-	self:Set("radius", radius)
+	self:SetPos(position)
+	self:SetRadius(radius)
+
 	self:Set("oxygen", 0)
+	self:Set("gravity", 0)
 	self:Set("temperature", 273.15)
 	
 	return self
@@ -41,10 +43,29 @@ end
 
 function STAtmosphere:SetRadius(radius)
 	self:Set("radius", radius)
+	self:Set("radius_sq", radius*radius)
+	self:Set("radius_cub", radius*radius*radius)
+	self:Set("volume", (4/3)*math.pi*self:Get("radius_cub"))
 end
 
 function STAtmosphere:GetRadius()
 	return self:Get("radius")
+end
+
+function STAtmosphere:GetVolume()
+	return self:Get("volume")
+end
+
+function STAtmosphere:SetGravity(gravity)
+	self:Set("gravity", gravity)
+end
+
+function STAtmosphere:GetGravity()
+	return self:Get("gravity")
+end
+
+function STAtmosphere:GetConcentration(resource)
+	return self:Get(resource)/self:Get("volume")
 end
 
 function STAtmosphere:IsInside(position)
@@ -69,10 +90,10 @@ function SThing.GetEntityAtmosphere(ent)
 	end
 
 	local closest = nil
-	local shortestDist = 100000
+	local shortestDist = 1000000000000
 	for _,atmo in ipairs(SThing.atmospheres) do
-		local distance = atmo:Get("position"):Distance(ent:GetPos())
-		if distance < atmo:Get("radius") and distance < shortestDist then
+		local distance = atmo:Get("position"):DistToSqr(ent:GetPos())
+		if distance < atmo:Get("radius_sq") and distance < shortestDist then
 			closest = atmo
 			shortestDist = distance
 		end

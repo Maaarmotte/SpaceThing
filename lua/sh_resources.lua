@@ -20,7 +20,7 @@ if SERVER then
 			-- Was able to locate an atmosphere for the player
 			if atmo then
 				aPly:Set("atmosphere", atmo)
-				if atmo:Get("oxygen") >= SThing.playerOxygenConsumption then
+				if atmo:Get("oxygen") >= SThing.playerOxygenConsumption and atmo:GetConcentration("oxygen") > 0.17 then
 					needed = 100 - aPly:Get("oxygen")
 					takeable = math.min(atmo:Get("oxygen"), needed)
 
