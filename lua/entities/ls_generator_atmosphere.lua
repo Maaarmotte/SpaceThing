@@ -28,7 +28,7 @@ if SERVER then
 			phys:Wake()
 		end
 
-		self.active = true
+		self.active = false
 
 	end
 
