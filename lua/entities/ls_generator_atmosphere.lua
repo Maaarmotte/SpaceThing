@@ -42,8 +42,9 @@ if SERVER then
 
 		if not self.active then
 
-			self.atmo = SThing.AddNewAtmosphere( self:GetPos(), 1000 )
+			self.atmo = SThing.AddNewAtmosphere( self:GetPos(), 4/3*math.pi*1000^3*20 )
 			self.atmo:Set("oxygen", 4000)
+			self.atmo:SetGravity(1)
 			self.active = true
 
 		end
