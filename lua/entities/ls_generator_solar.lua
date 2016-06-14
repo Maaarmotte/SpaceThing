@@ -11,6 +11,8 @@ ENT.Instructions	= ""
 
 if SERVER then
 		 
+	AddCSLuaFile()
+
 	function ENT:Initialize()
 	 
 		self:SetModel( "models/props_interiors/Radiator01a.mdl" )

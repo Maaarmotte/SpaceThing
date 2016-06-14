@@ -19,6 +19,8 @@ end
 
 if SERVER then
 
+	AddCSLuaFile()
+
 	
 	ST_Groups = ST_Groups or {}
 	local groupID = #ST_Groups

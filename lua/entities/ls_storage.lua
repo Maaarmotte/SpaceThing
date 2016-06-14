@@ -10,7 +10,9 @@ ENT.Purpose			= ""
 ENT.Instructions	= ""
 
 if SERVER then
-		 
+
+	AddCSLuaFile()
+
 	function ENT:getCapacity()
 
 		return {}

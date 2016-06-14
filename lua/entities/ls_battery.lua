@@ -11,6 +11,8 @@ ENT.Instructions	= ""
 
 if SERVER then
 
+	AddCSLuaFile()
+
 	function ENT:Initialize()
 	 
 		self:SetModel( "models/props_junk/TrashDumpster01a.mdl" )
