@@ -84,11 +84,6 @@ end
 
 -- Return the entity's closest atmosphere
 function SThing.GetEntityAtmosphere(ent)
-	local atmo = ent.STLastAtmosphere
-	if atmo and atmo:IsInside(ent:GetPos()) then
-		return atmo
-	end
-
 	local closest = nil
 	local shortestDist = 1000000000000
 	for _,atmo in ipairs(SThing.atmospheres) do
@@ -98,8 +93,6 @@ function SThing.GetEntityAtmosphere(ent)
 			shortestDist = distance
 		end
 	end
-
-	ent.STLastAtmosphere = closest
 
 	return closest
 end
