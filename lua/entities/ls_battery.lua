@@ -1,4 +1,4 @@
-local ENT = {}
+--local ENT = {}
 
 ENT.Type = "anim"
 ENT.Base = "ls_storage"
@@ -8,6 +8,9 @@ ENT.Author			= ""
 ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
+
+ENT.Category		= "Life support"
+ENT.Spawnable       = true
 
 if SERVER then
 
@@ -71,4 +74,4 @@ else
 
 end
 
-scripted_ents.Register(ENT, "ls_battery")
+--scripted_ents.Register(ENT, "ls_battery")

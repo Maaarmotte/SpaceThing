@@ -1,4 +1,4 @@
-local ENT = {}
+--Local ENT = {}
 
 ENT.Type = "anim"
 ENT.Base = "ls_generator"
@@ -8,6 +8,7 @@ ENT.Author			= ""
 ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
+
 
 if SERVER then
 
@@ -64,4 +65,4 @@ else
 end
 
 
-scripted_ents.Register(ENT, "ls_ore_extractor)
+--scripted_ents.Register(ENT, "ls_ore_extractor)

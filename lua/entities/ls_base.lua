@@ -1,4 +1,4 @@
-local ENT = {}
+--local ENT = {}
 
 ENT.Type = "anim"
 ENT.Base = "base_gmodentity"
@@ -208,4 +208,4 @@ else
 	end
 end
 
-scripted_ents.Register(ENT, "ls_base")
+--scripted_ents.Register(ENT, "ls_base")
