@@ -1,4 +1,4 @@
-local ENT = {}
+--local ENT = {}
 
 ENT.Type = "anim"
 ENT.Base = "ls_base"
@@ -43,4 +43,4 @@ if SERVER then
 end
 
 
-scripted_ents.Register(ENT, "ls_generator")
+--scripted_ents.Register(ENT, "ls_generator")
