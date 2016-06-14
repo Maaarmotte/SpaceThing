@@ -61,22 +61,25 @@ function SThing.AddNewAtmosphere(position, radius)
 	return atmo
 end
 
--- Return the player's closest atmosphere
-function SThing.GetPlayerAtmosphere(ply)
-	local atmo = GetAdvPlayer(ply):Get("atmosphere")
-	if atmo and atmo:IsInside(ply:GetPos()) then
+-- Return the entity's closest atmosphere
+function SThing.GetEntityAtmosphere(ent)
+	local atmo = ent.STLastAtmosphere
+	if atmo and atmo:IsInside(ent:GetPos()) then
 		return atmo
 	end
 
 	local closest = nil
 	local shortestDist = 100000
 	for _,atmo in ipairs(SThing.atmospheres) do
-		local distance = atmo:Get("position"):Distance(ply:GetPos())
+		local distance = atmo:Get("position"):Distance(ent:GetPos())
 		if distance < atmo:Get("radius") and distance < shortestDist then
 			closest = atmo
 			shortestDist = distance
 		end
 	end
+
+	ent.STLastAtmosphere = closest
+
 	return closest
 end
 
