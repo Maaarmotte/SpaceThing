@@ -3,7 +3,7 @@
 ENT.Type = "anim"
 ENT.Base = "ls_generator"
  
-ENT.PrintName		= "LifeSupport solar panel"
+ENT.PrintName		= "Solar panel"
 ENT.Author			= ""
 ENT.Contact			= ""
 ENT.Purpose			= ""
