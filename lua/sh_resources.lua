@@ -1,8 +1,10 @@
 if SERVER then
 	SThing.lastPlayersResourcesUpdate = CurTime()
 	SThing.playersResourcesUpdateDelay = 1
-	SThing.playerOxygenConsumption = 1
-	SThing.playerTemperatureConsumption = 0.01
+	SThing.playerOxygenConsumption = 10
+	SThing.playerTemperatureMult = 10
+	SThing.playerTemperature = 273
+	SThing.playerTemperatureTolerance = 50
 
 	function SThing.UpdatePlayersResources()
 		for _,ply in ipairs(player.GetAll()) do
@@ -20,6 +22,7 @@ if SERVER then
 			-- Was able to locate an atmosphere for the player
 			if atmo then
 				aPly:Set("atmosphere", atmo)
+
 				if atmo:Get("oxygen") >= SThing.playerOxygenConsumption and atmo:GetConcentration("oxygen") > 0.17 then
 					needed = 100 - aPly:Get("oxygen")
 					takeable = math.min(atmo:Get("oxygen"), needed)
@@ -42,6 +45,18 @@ if SERVER then
 			-- Send new level to the player, if necessary
 			if aPly:Get("oxygen") != initialOxygen then
 				aPly:Sync("oxygen")
+			end
+
+			-- Compute the new temperature
+			local temperature = 0
+			if atmo then
+				temperature = atmo:Get("temperature") or 0
+			end
+
+			aPly:Set(aPly:Get("temperature") + (temperature - aPly:Get("temperature"))/SThing.playerTemperatureMult, true)
+
+			if math.abs(aPly:Get("temperature") - SThing.playerTemperature) > SThing.playerTemperatureTolerance then
+				ply:TakeDamage(10)
 			end
 		end
 		SThing.lastPlayersResourcesUpdate = CurTime()
