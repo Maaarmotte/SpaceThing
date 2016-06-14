@@ -3,19 +3,21 @@ local ENT = {}
 ENT.Type = "anim"
 ENT.Base = "ls_generator"
  
-ENT.PrintName		= "LifeSupport atmosphere creator"
+ENT.PrintName		= "LifeSupport ore extractor"
 ENT.Author			= ""
 ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
 
 if SERVER then
+
+	AddCSLuaFile()
 		 
 	function ENT:Initialize()
 	 
-		self:SetModel( "models/props_wasteland/laundry_washer003.mdl" )
+		self:SetModel( "models/props_combine/headcrabcannister01a.mdl" )
 		self:PhysicsInit( SOLID_VPHYSICS )   
-		self:SetMoveType( MOVETYPE_VPHYSICS ) 
+		self:SetMoveType( MOVETYPE_NONE ) 
 		self:SetSolid( SOLID_VPHYSICS ) 
 	 
 	    local phys = self:GetPhysicsObject()
@@ -23,8 +25,7 @@ if SERVER then
 			phys:Wake()
 		end
 
-		self.atmo = SThing.AddNewAtmosphere( self:GetPos(), 1000 )
-		self.atmo:Set("oxygen", 4000)
+
 
 	end
 
@@ -36,13 +37,12 @@ if SERVER then
 	
 	function ENT:getProduction() 
 
-		return {}
+		return { {"ore", 1} }
 
 	end 
 
 	function ENT:Think()
 
-		self.atmo:SetPos( self:GetPos() )
 		self:SetNWInt("group", self:getGroup()) -- TODO: remove
 
 	end
@@ -53,7 +53,7 @@ else
 
 	function ENT:Think()
 		if self:BeingLookedAtByLocalPlayer() then
-			local str = "== Atmophere creator ==\n"
+			local str = "== Ore extractor ==\n"
 			str = str .. "Group: " .. self:GetNWInt("group")
 
 			AddWorldTip( self:EntIndex(), str, nil, nil, self)
@@ -64,4 +64,4 @@ else
 end
 
 
-scripted_ents.Register(ENT, "ls_generator_atmosphere")
+scripted_ents.Register(ENT, "ls_ore_extractor)
