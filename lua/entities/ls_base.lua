@@ -26,8 +26,10 @@ if SERVER then
 	local groupID = #ST_Groups
 
 
-	local DEBUG_ON = false
 
+	local DEBUG_ON = false
+	
+	
 	local function debugPrint(...)
 		if DEBUG_ON then
 			return print(...)
@@ -90,7 +92,7 @@ if SERVER then
 					for k,v in pairs(Entity(entID):getRequirements()) do -- On vérifie chaque type de ressource
 						
 						if (resources[ v[1] ] or 0) < v[2] then
-							debugPrint("h")
+							--debugPrint("h")
 							meetReq = false
 							break
 						end
@@ -115,11 +117,22 @@ if SERVER then
 
 								if batBool and isnumber(batID) and Entity(batID):isStorage() then
 
-									local cap = Entity(batID):getCapacity()[v[1]] or 0
+									local cap = 0
+									
+									for _,tble in pairs(Entity(batID):getCapacity()) do
+										if tble[1] == v[1] then
+											cap = tble[2]
+											break
+										end
+									end
+
 									local take = math.min(ressourceToTake, cap) -- ce qui sera pris dans le conteneur (pas plus que sa capacité maxi)
 									ressourceToTake = ressourceToTake - take
 								
-									Entity(batID):setCapacity( {v[1], (Entity(batID):getCapacity()[v[1]] or 0) - take} )
+									local t = {}
+									t[v[1]]= cap - take
+								
+									Entity(batID):setCapacity( t )
 
 									if ressourceToTake == 0 then
 										break -- Si il n'y a plus de ressource à prendre, pas besoin de parcourir les batteries.

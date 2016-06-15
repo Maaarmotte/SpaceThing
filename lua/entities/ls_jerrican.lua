@@ -44,7 +44,7 @@ if SERVER then
 		self.petrol = math.min(c.petrol or 0, 1000)
 		self:SetNWInt("petrol", self.petrol)
 
-		c.petrol = c.petrol - self.petrol
+		c.petrol = (c.petrol or 0) - self.petrol
 
 		return c
 
@@ -56,7 +56,7 @@ if SERVER then
 		self.petrol = self.petrol or 0
 		c.petrol = c.petrol or 0
 
-		local nextPetrol = math.min( (c.petrol or 0) + self.petrol, 1000)
+		local nextPetrol = math.min( c.petrol + self.petrol, 1000)
 		self:SetNWInt("petrol", nextPetrol)
 
 		c.petrol = c.petrol - (nextPetrol - self.petrol)

@@ -44,7 +44,7 @@ if SERVER then
 		self.energy = math.min(c.energy or 0, 1000)
 		self:SetNWInt("energy", self.energy)
 
-		c.energy = c.energy - self.energy
+		c.energy = (c.energy or 0) - self.energy
 
 		return c
 
