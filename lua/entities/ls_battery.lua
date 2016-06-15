@@ -9,8 +9,8 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
 
-ENT.Category		= "Life support"
-ENT.Spawnable       = true
+--ENT.Category		= "Life support"
+--ENT.Spawnable       = true
 
 if SERVER then
 
@@ -29,6 +29,7 @@ if SERVER then
 		end
 
 		self.energy = 0
+		self:SetNWInt("energy", self.energy)
 
 	end
 

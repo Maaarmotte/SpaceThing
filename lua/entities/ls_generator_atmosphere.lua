@@ -9,8 +9,8 @@ ENT.Contact			= ""
 ENT.Purpose			= ""
 ENT.Instructions	= ""
 
-ENT.Category		= "Life support"
-ENT.Spawnable       = true
+--ENT.Category		= "Life support"
+--ENT.Spawnable       = true
 
 if SERVER then
 

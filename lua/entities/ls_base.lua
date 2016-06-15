@@ -113,7 +113,7 @@ if SERVER then
 
 							for batID, batBool in pairs( devices ) do
 
-								if batBool and isnumber(batID) and Entity(batID):isGenerator() then
+								if batBool and isnumber(batID) and Entity(batID):isStorage() then
 
 									local cap = Entity(batID):getCapacity()[v[1]]
 									local take = math.min(ressourceToTake, cap) -- ce qui sera pris dans le conteneur (pas plus que sa capacité maxi)
