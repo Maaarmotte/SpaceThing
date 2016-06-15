@@ -52,11 +52,14 @@ if SERVER then
 
 	function ENT:addToCapacity( c ) 
 
+		self.energy = self.energy or 0
+		c.energy = c.energy or 0
+
 		local nextEnergy = math.min( (c.energy or 0) + self.energy, 1000)
 		self:SetNWInt("energy", nextEnergy)
 
-		c.energy = c.energy - (nextEnergy-self.energy)
-		
+		c.energy = c.energy - (nextEnergy - self.energy)
+
 		self.energy = nextEnergy
 
 		return c
