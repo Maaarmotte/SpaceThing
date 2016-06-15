@@ -67,7 +67,8 @@ function TOOL:LeftClick(trace)
 	local entity = ents.Create(selected)
 	entity:Spawn()
 	entity:Activate()
-	entity:SetPos(trace.HitPos - Vector(0, 0, entity:OBBMins().z))
+	entity:SetPos(trace.HitPos - trace.HitNormal*entity:OBBMins().z)
+	entity:SetAngles(trace.HitNormal:Angle() + Angle(90,0,0))
 	
 	local ply = self:GetOwner()
 
