@@ -62,7 +62,7 @@ function TOOL:LeftClick(trace)
 	local entity = ents.Create(selected)
 	entity:Spawn()
 	entity:Activate()
-	entity:SetPos(trace.HitPos - Vector(0, 0, entity():OBBMins().z))
+	entity:SetPos(trace.HitPos - Vector(0, 0, entity:OBBMins().z))
 	
 	undo.Create("Life Support")
 		undo.AddEntity(entity)
