@@ -119,7 +119,7 @@ if SERVER then
 									local take = math.min(ressourceToTake, cap) -- ce qui sera pris dans le conteneur (pas plus que sa capacité maxi)
 									ressourceToTake = ressourceToTake - take
 								
-									Entity(batID):setCapacity( {v[1], Entity(batID):getCapacity()[v[1]] - take} )
+									Entity(batID):setCapacity( {v[1], (Entity(batID):getCapacity()[v[1]] or 0) - take} )
 
 									if ressourceToTake == 0 then
 										break -- Si il n'y a plus de ressource à prendre, pas besoin de parcourir les batteries.
