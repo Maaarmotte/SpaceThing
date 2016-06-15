@@ -7,10 +7,10 @@ AddCSLuaFile()
 
 if ( CLIENT ) then
 
-	language.Add( "Tool.sm_link_tool.name", "Link  tool" )
-	language.Add( "Tool.sm_link_tool.desc", "Use it to link machines together." )
-	language.Add( "Tool.sm_link_tool.0", "Click on the device you want to link" )
-	language.Add( "Tool.sm_link_tool.1", "Clock on another device" )
+	language.Add( "Tool.ls_link_tool.name", "Link  tool" )
+	language.Add( "Tool.ls_link_tool.desc", "Use it to link machines together." )
+	language.Add( "Tool.ls_link_tool.0", "Click on the device you want to link" )
+	language.Add( "Tool.ls_link_tool.1", "Click on another device" )
 
 
 	function TOOL.BuildCPanel(panel)
