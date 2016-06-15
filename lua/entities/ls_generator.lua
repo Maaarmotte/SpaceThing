@@ -18,8 +18,8 @@ if SERVER then
 		return {}
 
 	end
-	
-	function ENT:getProduction() 
+
+	function ENT:produce()
 
 		return {}
 

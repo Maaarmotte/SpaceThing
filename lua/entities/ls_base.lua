@@ -13,7 +13,7 @@ ENT.lsEntity = true
 
 function isLSEntity( e )
 
-	return e.lsEntity or false
+	return (IsValid(e) and e.lsEntity) or false
 
 end
 
@@ -41,6 +41,8 @@ if SERVER then
 
 		for group, devices in pairs(ST_Groups) do
 			
+			--if table.Count(devices) == 0 then return end
+
 			debugPrint("Group", group)
 
 			
@@ -50,9 +52,11 @@ if SERVER then
 			end
 
 			local resources = {}
+			local ressourcesGenerated = {}
 
 			debugPrint("- Recuperation ressources storages")
-			-- Premierement on prend toutes les ressources des storages 
+			-- Premierement on prend toutes les ressources des storages pour vérifier que chaque gen peut 
+			-- produire sans avoir à reboucler à travers tous les storages.
 			for entID, bool in pairs(devices) do
 
 				if not IsValid(Entity(entID)) then
@@ -73,7 +77,7 @@ if SERVER then
 			end
 			
 			debugPrint("- Utilisation des ressources")			
-			-- Ensuite on traite tous les générateurs 
+			-- Ensuite on va utiliser les ressources dans les générateurs
 			for entID, bool in pairs(devices) do
 
 				if bool and isnumber(entID) and Entity(entID):isGenerator() then
@@ -82,7 +86,8 @@ if SERVER then
 
 					-- On vérifie que le générateur peut pomper ce qu'il a besoin (meet requierements = meetReq) *
 					local meetReq = true
-					for k,v in pairs(Entity(entID):getRequirements()) do
+
+					for k,v in pairs(Entity(entID):getRequirements()) do -- On vérifie chaque type de ressource
 						
 						if (resources[ v[1] ] or 0) < v[2] then
 							debugPrint("h")
@@ -92,28 +97,53 @@ if SERVER then
 
 					end
 
-					if meetReq then
-						debugPrint("-- Ce generateur peut produire.")
-					else
-						debugPrint("-- Ce generateur ne peut pas produire.")
-					end
 
-					-- Si il peut, on pompe les ressources et on le fait produire.
+					-- Si il peut produire, on pompe les ressources et on le fait produire.
 					if meetReq then
+
+						debugPrint("-- Ce generateur peut produire.")
+
+						-- On parcours tous les types de ressources nécessaires
 						for k,v in pairs(Entity(entID):getRequirements()) do
 							
-							resources[v[1]] = (resources[v[1]] or 0) - v[2]
+							resources[v[1]] = (resources[v[1]] or 0) - v[2] -- On diminue ressources pour les futurs checks de meetReq
+
+							-- On va parcourir toutes les storages pour prendre leur ressource un à un.
+							local ressourceToTake = v[2]
+
+							for batID, batBool in pairs( devices ) do
+
+								if batBool and isnumber(batID) and Entity(batID):isGenerator() then
+
+									local cap = Entity(batID):getCapacity()[v[1]]
+									local take = math.min(ressourceToTake, cap) -- ce qui sera pris dans le conteneur (pas plus que sa capacité maxi)
+									ressourceToTake = ressourceToTake - take
+								
+									Entity(batID):setCapacity( {v[1], Entity(batID):getCapacity()[v[1]] - take} )
+
+									if ressourceToTake == 0 then
+										break -- Si il n'y a plus de ressource à prendre, pas besoin de parcourir les batteries.
+									end
+									
+								end
+
+							end
 
 						end
 
-						for k,v in pairs(Entity(entID):getProduction()) do
+						-- On produit et on ajoute dans une variable qui sera déchargée plus tard
+						-- dans les storages
+						for k,v in pairs(Entity(entID):produce()) do
 
-							resources[v[1]] = (resources[v[1]] or 0) + v[2]
+							ressourcesGenerated[v[1]] = (ressourcesGenerated[v[1]] or 0) + v[2]
 
 						end
+
+
 					else
 
 						Entity(entID):dontProduce() 
+						debugPrint("-- Ce generateur ne peut pas produire.")
 
 					end
 
@@ -129,7 +159,7 @@ if SERVER then
 			
 				if bool and isnumber(entID) and Entity(entID):isStorage() then
 					
-					resources = Entity(entID):setCapacity( resources )
+					ressourcesGenerated = Entity(entID):addToCapacity( ressourcesGenerated )
 
 				end
 

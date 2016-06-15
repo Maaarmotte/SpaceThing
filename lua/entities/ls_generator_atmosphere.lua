@@ -37,8 +37,8 @@ if SERVER then
 		return { {"energy", 20} }
 
 	end
-	
-	function ENT:getProduction() 
+
+	function ENT:produce()
 
 		if not self.active then
 
