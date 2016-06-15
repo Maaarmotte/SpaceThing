@@ -2,17 +2,29 @@ TOOL.Category = "SpaceThing"
 TOOL.Name = "Spawn Tool"
 TOOL.Command = nil
 TOOL.ConfigName = ""
-TOOL.ClientConVar["selected"] = "models/error.mdl"
+TOOL.ClientConVar["selected"] = "prop_physics"
 
 AddCSLuaFile()
 
 local generators = { ls_generator_solar = "Solar panel",  }
 local storages = { ls_battery = "Battery" }
+local climreg = { ls_generator_atmosphere = "Atmosphere generator" }
 
 if CLIENT then
 	language.Add("Tool.ls_spawn_tool.name", "Spawn  tool")
 	language.Add("Tool.ls_spawn_tool.desc", "Use it to spawn life support devices.")
 	language.Add("Tool.ls_spawn_tool.0", "Click to spawn the device.")
+
+	local function BuildSubNode(tree, name, arr, icon)
+		local sub = tree:AddNode(name)
+		sub:SetExpanded(true)
+
+		for k,v in pairs(arr) do
+			local node = sub:AddNode(v)
+			node.Icon:SetImage(icon)
+			node.path = k
+		end
+	end
 	
 	function TOOL.BuildCPanel(CPanel)
 		SUPERPANEL = CPanel
@@ -34,20 +46,13 @@ if CLIENT then
 		dtree:SetSize(sx - 2*xmargin, 240)
 		
 		-- Append generators
-		local gen = dtree:AddNode("Generators")
-		for k,v in pairs(generators) do
-			local node = gen:AddNode(v)
-			node.Icon:SetImage("materials/icon16/cog.png")
-			node.path = k
-		end
+		BuildSubNode(dtree, "Generators", generators, "materials/icon16/cog.png")
 		
 		-- Append storages
-		local stor = dtree:AddNode("Storages")
-		for k,v in pairs(storages) do
-			local node = stor:AddNode(v)
-			node.Icon:SetImage("materials/icon16/database.png")
-			node.path = k
-		end
+		BuildSubNode(dtree, "Storages", storages, "materials/icon16/database.png")
+
+		-- Append atmospheres devices
+		BuildSubNode(dtree, "Atmosphere", climreg, "materials/icon16/world.png")
 	end
 end
 
@@ -69,6 +74,7 @@ function TOOL:LeftClick(trace)
 	undo.Create("Life Support")
 		undo.AddEntity(entity)
 		undo.SetPlayer(ply)
+		undo.SetCustomUndoText("Undone " .. (generators[selected] or storages[selected] or climreg[selected]))
 	undo.Finish()
 
 	ply:AddCleanup("Life Support", entity)
