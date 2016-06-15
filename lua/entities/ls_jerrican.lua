@@ -81,7 +81,7 @@ else
 
 	function ENT:Think()
 		if self:BeingLookedAtByLocalPlayer() then
-			local str = "== BATTERY ==\n"
+			local str = "== JERRICAN ==\n"
 			str = str .. "Group: " .. self:GetNWInt("group") .. "\n"
 			str = str .. "Petrol: " .. self:GetNWInt("petrol")
 			
