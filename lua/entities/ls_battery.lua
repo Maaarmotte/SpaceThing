@@ -49,6 +49,22 @@ if SERVER then
 
 	end 
 
+
+	function ENT:addToCapacity( c ) 
+
+		local nextEnergy = math.min( (c.energy or 0) + self.energy, 1000)
+		self:SetNWInt("energy", nextEnergy)
+
+		c.energy = c.energy - (nextEnergy-self.energy)
+		
+		self.energy = nextEnergy
+
+		return c
+
+	end 
+
+	
+
 	function ENT:Think()
 
 		self:SetNWInt("group", self:getGroup()) -- TODO: remove

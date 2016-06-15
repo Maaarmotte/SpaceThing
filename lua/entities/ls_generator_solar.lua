@@ -37,7 +37,7 @@ if SERVER then
 
 	end
 	
-	function ENT:getProduction() 
+	function ENT:produce() 
 
 		return {{ "energy", 10 }}
 

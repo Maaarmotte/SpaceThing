@@ -25,6 +25,15 @@ if SERVER then
 
 	end 
 
+	
+	function ENT:addToCapacity() 
+
+		return {}
+
+	end 
+
+
+
 
 	function ENT:isStorage()
 
