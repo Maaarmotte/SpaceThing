@@ -2,7 +2,7 @@ TOOL.Category = "SpaceThing"
 TOOL.Name = "Spawn Tool"
 TOOL.Command = nil
 TOOL.ConfigName = ""
-TOOL.ClientConVar["selected"] = "model/error.mdl"
+TOOL.ClientConVar["selected"] = "models/error.mdl"
 
 AddCSLuaFile()
 
