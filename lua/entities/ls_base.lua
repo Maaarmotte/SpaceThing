@@ -115,7 +115,7 @@ if SERVER then
 
 								if batBool and isnumber(batID) and Entity(batID):isStorage() then
 
-									local cap = Entity(batID):getCapacity()[v[1]]
+									local cap = Entity(batID):getCapacity()[v[1]] or 0
 									local take = math.min(ressourceToTake, cap) -- ce qui sera pris dans le conteneur (pas plus que sa capacité maxi)
 									ressourceToTake = ressourceToTake - take
 								

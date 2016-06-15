@@ -29,7 +29,7 @@ if SERVER then
 		end
 
 		self.petrol = 300
-		self:SetNWInt("petrol", elf.petrol)
+		self:SetNWInt("petrol", self.petrol)
 
 	end
 
