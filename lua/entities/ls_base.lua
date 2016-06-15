@@ -26,7 +26,7 @@ if SERVER then
 	local groupID = #ST_Groups
 
 
-	local DEBUG_ON = true
+	local DEBUG_ON = false
 
 	local function debugPrint(...)
 		if DEBUG_ON then
