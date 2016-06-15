@@ -64,11 +64,14 @@ function TOOL:LeftClick(trace)
 	entity:Activate()
 	entity:SetPos(trace.HitPos - Vector(0, 0, entity:OBBMins().z))
 	
+	local ply = self:GetOwner()
+
 	undo.Create("Life Support")
 		undo.AddEntity(entity)
+		undo.SetPlayer(ply)
 	undo.Finish()
 
-	self:GetOwner():AddCleanup("Life Support", entity)
+	ply:AddCleanup("Life Support", entity)
 
 	return true
 end
