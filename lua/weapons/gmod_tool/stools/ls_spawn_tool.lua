@@ -6,8 +6,8 @@ TOOL.ClientConVar["selected"] = "prop_physics"
 
 AddCSLuaFile()
 
-local generators = { ls_generator_solar = "Solar panel",  }
-local storages = { ls_battery = "Battery" }
+local generators = { ls_generator_solar = "Solar panel", ls_generator_petrol = "Engine-generator" }
+local storages = { ls_battery = "Battery", ls_jerrican = "Fuel jerrican" }
 local climreg = { ls_generator_atmosphere = "Atmosphere generator" }
 
 if CLIENT then
