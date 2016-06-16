@@ -17,6 +17,16 @@ if SERVER then
 		 
 	AddCSLuaFile()
 
+	self.runningSound = "diesel_loop" 
+	sound.Add( {
+		name = "diesel_loop",
+		channel = CHAN_AUTO,
+		volume = 1.0,
+		level = 85,
+		pitch = { 95, 105 },
+		sound = "spacething/diesel_loop.wav"
+	} )
+
 	function ENT:Initialize()
 	 
 		self:SetModel( "models/props_outland/generator_static01a.mdl" )
@@ -28,7 +38,6 @@ if SERVER then
 		if phys:IsValid() then
 			phys:Wake()
 		end
-
 	end
 
 	function ENT:getRequirements( res )

@@ -11,6 +11,8 @@ ENT.Instructions	= ""
 
 ENT.lsEntity = true
 
+ENT.runningSound = nil
+
 function isLSEntity( e )
 
 	return (IsValid(e) and e.lsEntity) or false
@@ -79,7 +81,6 @@ if SERVER then
 
 		end
 
-
 		-- Si il peut produire, on pompe les ressources et on le fait produire.
 		if meetReq then
 
@@ -93,7 +94,6 @@ if SERVER then
 				resourcesAvailable[res] = (resourcesAvailable[res] or 0) - amount -- On diminue ressources pour les futurs checks de meetReq
 			
 			end
-
 
 			-- On va parcourir toutes les storages pour prendre leur ressource un à un.
 			for batID, batBool in pairs( devices ) do
@@ -122,6 +122,15 @@ if SERVER then
 
 		end
 
+		local shouldStartPlaying = !Entity(entID).active and meetReq
+
+		if shouldStartPlaying and Entity(entID).runningSound then
+			Entity(entID):EmitSound(Entity(entID).runningSound)
+		elseif not meetReq and Entity(entID).runningSound then
+			Entity(entID):StopSound(Entity(entID).runningSound)
+		end
+		
+		Entity(entID).active = meetReq
 	end
 	
 	local function processGroup( group, devices )
