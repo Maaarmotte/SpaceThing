@@ -1,4 +1,4 @@
---local ENT = {}
+if(CurTime() > 120) then ENT = {} end
 
 ENT.Type = "anim"
 ENT.Base = "ls_generator"
@@ -31,15 +31,18 @@ if SERVER then
 
 	end
 
-	function ENT:getRequirements()
+	function ENT:getRequirements( res )
 
-		return {}
+		return res or {}
 
 	end
 	
-	function ENT:produce() 
+	function ENT:produce( res ) 
 
-		return {{ "energy", 10 }}
+		res = res or {}
+		res.energy = (res.energy or 0) + 10
+
+		return res
 
 	end 
 
@@ -66,4 +69,4 @@ else
 end
 
 
---scripted_ents.Register(ENT, "ls_generator_solar")
+if(CurTime() > 120) then scripted_ents.Register(ENT, "ls_generator_solar") end

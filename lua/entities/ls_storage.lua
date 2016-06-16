@@ -1,4 +1,4 @@
---local ENT = {}
+if(CurTime() > 120) then ENT = {} end
 
 ENT.Type = "anim"
 ENT.Base = "ls_base"
@@ -13,27 +13,34 @@ if SERVER then
 
 	AddCSLuaFile()
 
-	function ENT:getCapacity()
+	-- Will return the current capacity of the storage (or add it to the variable provided)
+	function ENT:getCapacity( c )
 
-		return {}
+		return c or {}
 
 	end
 	
-	function ENT:setCapacity() 
+	-- Will set the ressources in c to the storage
+	-- and will eventualy return the ressources that could not be stored
+	function ENT:setCapacity( c ) 
 
-		return {}
-
-	end 
-
-	
-	function ENT:addToCapacity() 
-
-		return {}
+		return c or {}
 
 	end 
 
+	-- Will add the ressources in c to the storage
+	-- and will eventualy return the ressources that could not be stored
+	function ENT:addToCapacity( c ) 
 
+		return c or {}
 
+	end 
+
+	function ENT:takeFromCapacity( c )
+
+		return c or {}
+
+	end
 
 	function ENT:isStorage()
 
@@ -44,4 +51,4 @@ if SERVER then
 
 end
 
---scripted_ents.Register(ENT, "ls_storage")
+if(CurTime() > 120) then scripted_ents.Register(ENT, "ls_storage") end

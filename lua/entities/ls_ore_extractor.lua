@@ -1,4 +1,4 @@
-
+--[[
 --Local ENT = {}
 
 ENT.Type = "anim"
@@ -67,3 +67,4 @@ end
 
 
 --scripted_ents.Register(ENT, "ls_ore_extractor)
+]]

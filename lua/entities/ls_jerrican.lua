@@ -1,4 +1,4 @@
---local ENT = {}
+if(CurTime() > 120) then ENT = {} end
 
 ENT.Type = "anim"
 ENT.Base = "ls_storage"
@@ -33,18 +33,24 @@ if SERVER then
 
 	end
 
-	function ENT:getCapacity()
+	function ENT:getCapacity( c )
 
-		return { {"petrol", self.petrol or 0} }
+		c = c or {}
+		c.petrol = (c.petrol or 0) + self.petrol
+
+		return c
 
 	end
 	
 	function ENT:setCapacity( c ) 
 
-		self.petrol = math.min(c.petrol or 0, 1000)
+		c = c or {}
+		c.petrol = c.petrol or 0
+
+		self.petrol = math.min(c.petrol, 1000)
 		self:SetNWInt("petrol", self.petrol)
 
-		c.petrol = (c.petrol or 0) - self.petrol
+		c.petrol = c.petrol - self.petrol
 
 		return c
 
@@ -53,7 +59,7 @@ if SERVER then
 
 	function ENT:addToCapacity( c ) 
 
-		self.petrol = self.petrol or 0
+		c = c or {}
 		c.petrol = c.petrol or 0
 
 		local nextPetrol = math.min( c.petrol + self.petrol, 1000)
@@ -66,6 +72,24 @@ if SERVER then
 		return c
 
 	end 
+
+
+	function ENT:takeFromCapacity( c )
+
+		
+		c = c or {}
+		c.petrol = c.petrol or 0
+
+		local nextPetrol = math.max( self.petrol - c.petrol , 0)
+		self:SetNWInt("petrol", nextPetrol)
+
+		c.petrol = c.petrol - (self.petrol - nextPetrol)
+
+		self.petrol = nextPetrol
+
+		return c
+
+	end
 
 	
 
@@ -94,4 +118,4 @@ else
 
 end
 
---scripted_ents.Register(ENT, "ls_battery")
+if(CurTime() > 120) then scripted_ents.Register(ENT, "ls_jerrican") end
