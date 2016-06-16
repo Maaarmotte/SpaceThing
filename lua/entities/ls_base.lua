@@ -27,7 +27,7 @@ if SERVER then
 
 
 
-	local DEBUG_ON = true
+	local DEBUG_ON = false
 	
 	
 	local function debugPrint(...)
@@ -183,10 +183,10 @@ if SERVER then
 
 	end
 
-	/* 
-	 * Permet d'attribuer un groupe à un ensemble de machines du LS 
-	 * Groupe 0 = Pas de groupe
-	 */
+	 
+	-- Permet d'attribuer un groupe à un ensemble de machines du LS 
+	-- Groupe 0 = Pas de groupe
+
 	function ENT:setGroup( group )
 
 		if self:getGroup() ~= 0 then
@@ -194,6 +194,7 @@ if SERVER then
 		end
 
 		self.group = group or 0
+		self:SetNWInt("group", self.group)
 
 		if self.group ~= 0 then
 			ST_Groups[self.group][self:EntIndex()] = true
