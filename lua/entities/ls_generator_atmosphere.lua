@@ -1,4 +1,4 @@
---local ENT = {}
+if(CurTime() > 120) then ENT = {} end
 
 ENT.Type = "anim"
 ENT.Base = "ls_generator"
@@ -32,13 +32,16 @@ if SERVER then
 
 	end
 
-	function ENT:getRequirements()
+	function ENT:getRequirements( res )
 
-		return { {"energy", 20} }
+		res = res or {}
+		res.energy = (res.energy or 0) + 20
+
+		return res
 
 	end
 
-	function ENT:produce()
+	function ENT:produce( res )
 
 		if not self.active then
 
@@ -49,12 +52,12 @@ if SERVER then
 
 		end
 
-		return {}
+		return res or {}
 
 	end 
 
 
-	function ENT:dontProduce() 
+	function ENT:dontProduce( res ) 
 
 		if self.active then
 
@@ -63,7 +66,7 @@ if SERVER then
 
 		end
 
-		return {}
+		return res or {}
 
 	end
 
@@ -72,6 +75,7 @@ if SERVER then
 		if self.active then
 			self.atmo:SetPos( self:GetPos() )
 		end
+
 		self:SetNWInt("group", self:getGroup()) -- TODO: remove
 
 	end
@@ -79,8 +83,11 @@ if SERVER then
 
 	function ENT:OnRemove()
 
-		self:dontProduce()
+		if self.active then
 
+			self.atmo:Remove()
+
+		end
 	end
 
 
@@ -100,4 +107,4 @@ else
 end
 
 
---scripted_ents.Register(ENT, "ls_generator_atmosphere")
+if(CurTime() > 120) then scripted_ents.Register(ENT, "ls_generator_atmosphere") end

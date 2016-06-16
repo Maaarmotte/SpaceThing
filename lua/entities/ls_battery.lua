@@ -1,4 +1,4 @@
---local ENT = {}
+if(CurTime() > 120) then ENT = {} end
 
 ENT.Type = "anim"
 ENT.Base = "ls_storage"
@@ -33,18 +33,28 @@ if SERVER then
 
 	end
 
-	function ENT:getCapacity()
+	function ENT:getCapacity( c )
 
-		return { {"energy", self.energy or 0} }
+		c = c or {}
+		c.energy = c.energy or 0
+
+		c.energy = c.energy + self.energy
+
+		return c
 
 	end
 	
 	function ENT:setCapacity( c ) 
 
-		self.energy = math.min(c.energy or 0, 1000)
+
+		print("FONCTION DEPRECIEE OMG")
+		c = c or {}
+		c.energy = c.energy or 0
+
+		self.energy = math.min(c.energy, 1000)
 		self:SetNWInt("energy", self.energy)
 
-		c.energy = (c.energy or 0) - self.energy
+		c.energy = c.energy - self.energy
 
 		return c
 
@@ -53,19 +63,38 @@ if SERVER then
 
 	function ENT:addToCapacity( c ) 
 
-		self.energy = self.energy or 0
+		c = c or {}
 		c.energy = c.energy or 0
 
-		local nextEnergy = math.min( (c.energy or 0) + self.energy, 1000)
+		local nextEnergy = math.min( c.energy + self.energy, 1000)
 		self:SetNWInt("energy", nextEnergy)
 
 		c.energy = c.energy - (nextEnergy - self.energy)
 
 		self.energy = nextEnergy
 
+
 		return c
 
 	end 
+
+	function ENT:takeFromCapacity( c )
+
+
+		
+		c = c or {}
+		c.energy = c.energy or 0
+
+		local nextEnergy = math.max( self.energy - c.energy , 0)
+		self:SetNWInt("energy", nextEnergy)
+
+		c.energy = c.energy - (self.energy - nextEnergy)
+
+		self.energy = nextEnergy
+
+		return c
+
+	end
 
 	
 
@@ -94,4 +123,4 @@ else
 
 end
 
---scripted_ents.Register(ENT, "ls_battery")
+if(CurTime() > 120) then scripted_ents.Register(ENT, "ls_battery") end

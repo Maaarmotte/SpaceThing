@@ -1,4 +1,4 @@
---local ENT = {}
+if(CurTime() > 120) then ENT = {} end
 
 ENT.Type = "anim"
 ENT.Base = "ls_base"
@@ -13,24 +13,26 @@ if SERVER then
 
 	AddCSLuaFile()
 		 
-	function ENT:getRequirements()
+	-- Returns the requirements of the generator
+	function ENT:getRequirements( res )
 
-		return {}
+		return res or {}
 
 	end
 
-	function ENT:produce()
+	-- Will add the production to res and return it
+	function ENT:produce( res )
 
-		return {}
+		return res or {}
 
 	end
 	
-	function ENT:dontProduce() 
+	-- May add some ressources like ENT:produce( res )
+	function ENT:dontProduce( res ) 
 
-		return {}
+		return res or {}
 
 	end
-
 
 	function ENT:isGenerator()
 
@@ -42,5 +44,4 @@ if SERVER then
 
 end
 
-
---scripted_ents.Register(ENT, "ls_generator")
+if(CurTime() > 120) then scripted_ents.Register(ENT, "ls_generator") end
