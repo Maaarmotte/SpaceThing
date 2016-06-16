@@ -239,8 +239,11 @@ if SERVER then
 
 	end
 
-
-
+	function ENT:Remove()
+		if self.active and self.runningSound then
+			self:StopSound(self.runningSound)
+		end
+	end
 else
 	function ENT:beingLookedAtByLocalPlayer()
 

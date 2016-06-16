@@ -17,12 +17,12 @@ if SERVER then
 		 
 	AddCSLuaFile()
 
-	self.runningSound = "diesel_loop" 
+	ENT.runningSound = "diesel_loop" 
 	sound.Add( {
 		name = "diesel_loop",
 		channel = CHAN_AUTO,
 		volume = 1.0,
-		level = 85,
+		level = 80,
 		pitch = { 95, 105 },
 		sound = "spacething/diesel_loop.wav"
 	} )
