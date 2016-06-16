@@ -42,8 +42,12 @@ if SERVER then
 	function ENT:produce( res )
 
 		local atmo = SThing.GetEntityAtmosphere( self )
+		local ox = 0
 
-		local ox = atmo:Get("oxygen")
+		if atmo then
+			ox = atmo:Get("oxygen")
+		end
+
 		local nextOx = math.max(ox-1000,0)
 		atmo:Set("oxygen", nextOx)
 
