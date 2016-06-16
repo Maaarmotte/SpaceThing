@@ -41,19 +41,26 @@ function STAtmosphere:GetPos()
 	return self:Get("position")
 end
 
+-- In GMod unit
 function STAtmosphere:SetRadius(radius)
 	self:Set("radius", radius)
 	self:Set("radius_sq", radius*radius)
 	self:Set("radius_cub", radius*radius*radius)
+	self:Set("radius_m", radius*0.01905)
+	self:Set("radius_m_sq", self:Get("radius_m")*self:Get("radius_m"))
+	self:Set("radius_m_cub", self:Get("radius_m")*self:Get("radius_m")*self:Get("radius_m"))
 	self:Set("volume", (4/3)*math.pi*self:Get("radius_cub"))
+	self:Set("volume_m_cub", (4/3)*math.pi*self:Get("radius_m_cub"))
 end
 
+-- In GMod unit
 function STAtmosphere:GetRadius()
 	return self:Get("radius")
 end
 
+-- In m^3
 function STAtmosphere:GetVolume()
-	return self:Get("volume")
+	return self:Get("volume_m_cub")
 end
 
 function STAtmosphere:SetGravity(gravity)
@@ -65,11 +72,11 @@ function STAtmosphere:GetGravity()
 end
 
 function STAtmosphere:GetConcentration(resource)
-	return self:Get(resource)/self:Get("volume")
+	return self:Get(resource)/self:GetVolume()
 end
 
 function STAtmosphere:IsInside(position)
-	return (position - self:Get("position")):Length() <= self:Get("radius")
+	return (position - self:GetPos()):Length() <= self:GetRadius()
 end
 
 function STAtmosphere:Remove()
@@ -85,16 +92,28 @@ end
 -- Return the entity's closest atmosphere
 function SThing.GetEntityAtmosphere(ent)
 	local closest = nil
-	local shortestDist = 1000000000000
+	local smallest = 10^10
 	for _,atmo in ipairs(SThing.atmospheres) do
-		local distance = atmo:Get("position"):DistToSqr(ent:GetPos())
-		if distance < atmo:Get("radius_sq") and distance < shortestDist then
+		local distance = atmo:GetPos():DistToSqr(ent:GetPos())
+		if distance < atmo:Get("radius_sq") and atmo:Get("radius") < smallest then
 			closest = atmo
-			shortestDist = distance
+			smallest = atmo:Get("radius")
 		end
 	end
 
 	return closest
+end
+
+function SThing.GetEntityAtmospheres(ent)
+	local atmospheres = {}
+	for _,atmo in ipairs(SThing.atmospheres) do
+		local distance = atmo:GetPos():DistToSqr(ent:GetPos())
+		if distance < atmo:Get("radius_sq") then
+			table.insert(atmospheres, atmo)
+		end
+	end
+
+	return atmospheres
 end
 
 SThing.atmospheres = {}
