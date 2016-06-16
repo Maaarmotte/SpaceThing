@@ -76,8 +76,6 @@ if SERVER then
 			self.atmo:SetPos( self:GetPos() )
 		end
 
-		self:SetNWInt("group", self:getGroup()) -- TODO: remove
-
 	end
 
 

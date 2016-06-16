@@ -48,13 +48,7 @@ if SERVER then
 		return res
 
 	end 
-
-	function ENT:Think()
-
-		self:SetNWInt("group", self:getGroup()) -- TODO: remove
-
-	end
-
+	
 else
 
 	function ENT:Think()
