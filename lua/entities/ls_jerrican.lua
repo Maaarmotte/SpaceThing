@@ -11,6 +11,9 @@ ENT.Instructions	= ""
 
 if SERVER then
 
+	AddCSLuaFile()
+
+
 	ENT.model = "models/props_junk/gascan001a.mdl"
 
 	function ENT:getMaxResources()
